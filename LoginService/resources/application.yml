@@ -1,0 +1,18 @@
+server:
+  port: 8002
+  
+zuul:
+    routes:
+     train-availability-service:
+      url: http://localhost:8082/train-availability-service/train/12
+     reservation-service:
+      url: http://localhost:8083
+     payment-service:
+      url: http://localhost:8084
+     Contact-Service:
+      url: http://localhost:8085 
+      
+     
+       
+
+     
