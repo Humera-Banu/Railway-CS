@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.RRSCasestudy.Resource.AdminController;
+import com.RRSCasestudy.model.Reservation;
 import com.RRSCasestudy.model.TrainAvailability;
 import com.RRSCasestudy.model.User;
 @RestController()
@@ -67,6 +69,12 @@ public class AdminService {
 	
 	//--------------------Delete train Info By Admin-----------------------------//
 	
+	@DeleteMapping("/DeleteTrain/{id}")
+	public String deleteTrainInfo(@PathVariable int id)
+	{
+		return admin.deleteTrain(id);
+	}
+	
 	//------------------------Display All users-------------------------------
 	@GetMapping("/allUsers")
 	public List<User> getUsers()
@@ -78,6 +86,21 @@ public class AdminService {
 	@DeleteMapping("/deleteUser/{userId}")
 	public String deleteUser(@PathVariable int userId)
 	{
-	  return admin.deleteByAdmin(userId);
+	  return admin.deleteUserByAdmin(userId);
+	}
+	
+	//-------------------Displaying all Reservation--------
+	@GetMapping("/getreservation")
+	public List<Reservation> getOrder()
+	{
+		return admin.getReservation();
+	}
+	
+
+	//---------------------------Delete Reservation-------------------------
+	@DeleteMapping("/deleteReservation/{rId}")
+	public String deleteReservation(@PathVariable int rId)
+	{
+	  return admin.deleteReservationByAdmin(rId);
 	}
 }
