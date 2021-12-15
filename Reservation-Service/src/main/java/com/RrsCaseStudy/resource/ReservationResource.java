@@ -30,7 +30,7 @@ public class ReservationResource {
 		this.restTemplate=restTemplateBuilder.build();
 	}
 	@PostMapping("/addorder")
-	public Reservation getReservation(@RequestBody Reservation order)
+	public Reservation addReservation(@RequestBody Reservation order)
 	{
 		return service.addReservation(order);
 	}
@@ -48,5 +48,11 @@ public class ReservationResource {
 	public String deleteOrder(@PathVariable("rId") int rId)
 	{
 		return service.deleteOrder(rId);
+	}
+	@DeleteMapping("/Delete")
+	public Reservation delete(@RequestBody Reservation order)
+	{
+		 service.delete(order);
+		 return order;
 	}
 }

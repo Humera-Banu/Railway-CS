@@ -9,12 +9,14 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 
+import lombok.Generated;
 import lombok.ToString;
 @Document(collection = "reservation")
 
 @ToString
 public class Reservation {
 	@Id
+	@Generated
 	public int rId;
 	public Collection<TrainAvailability>  train;
 	public String status;
@@ -31,8 +33,9 @@ public class Reservation {
 		this.rId = rId;
 	}
 
-	public Reservation( Collection<TrainAvailability> train, String status) {
+	public Reservation(int rId, Collection<TrainAvailability> train, String status) {
 		super();
+		this.rId = rId;
 		this.train = train;
 		this.status = status;
 	}

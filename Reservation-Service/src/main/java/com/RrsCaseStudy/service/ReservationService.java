@@ -2,6 +2,7 @@ package com.RrsCaseStudy.service;
 
 import java.util.List;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,5 +32,8 @@ public class ReservationService {
 		return "Reservation cancelled for Id " + rId;
 	}
 
-	
+	public void delete(Reservation order)
+	{
+		repository.delete(order);
+	}
 }

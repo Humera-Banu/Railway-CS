@@ -26,10 +26,10 @@ public class TrainAvailabilityResource {
 	@Autowired
 	RrsRepository repository;
 	@PostMapping("/AddTrains")
-	public String AddTrain(@RequestBody TrainAvailability train)
+	public TrainAvailability AddTrain(@RequestBody TrainAvailability train)
 	{
-		repository.save(train);
-		return "Train Details added at TrainNo"+ train.getTrainNo();
+		return  repository.save(train);
+		
 	}
 	@GetMapping("/ShowAllTrains")
 	public List<TrainAvailability> getTrains()
@@ -57,15 +57,21 @@ public class TrainAvailabilityResource {
 		return repository.findByAvailableDate(availableDate);
 	}
 	@PutMapping("/updateTraindetails")
-	public String UpdateTrain(@RequestBody TrainAvailability train)
+	public TrainAvailability UpdateTrain(@RequestBody TrainAvailability train)
 	{
-		repository.save(train);
-		return "Train Details updated with TrainNo "+ train.getTrainNo();
+		return repository.save(train);
+		
 	}
 	@DeleteMapping("/delete/{id}")
 	public String deleteTrainByID(@PathVariable int id)
 	{
 		 repository.deleteById(id);
 		return "Train info deleted at trainNo "+ id;
+	}
+	@DeleteMapping("/deleteTrain")
+	public TrainAvailability deleteTrain(@RequestBody TrainAvailability train)
+	{
+		 repository.delete(train);
+		return train;
 	}
 }

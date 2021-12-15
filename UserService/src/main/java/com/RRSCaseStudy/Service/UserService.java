@@ -35,15 +35,18 @@ public class UserService {
 		@Autowired
 		UserRepository userRepository;
 		@PostMapping("/AddUser")
-		public String AddTrain(@RequestBody User user)
+		public User AddUser(@RequestBody User user)
 		{
-			userRepository.save(user);
-			return "User Details added with UserID "+ user.getUserId();
+			return userRepository.save(user);
+			
 		}
 		@GetMapping("/ShowAllUsers")
-		public List<User> getTrains()
+		public List<User> getUsers()
 		{
-			return userRepository.findAll();
+			List<User> user = userRepository.findAll();
+			System.out.println("Data is "+user);
+			return user;
+			
 		}
 		
 		@GetMapping("/findUserById/{userId}")
@@ -59,14 +62,20 @@ public class UserService {
 		}
 		
 		@PutMapping("/updateUserdetails")
-		public String UpdateTrain(@RequestBody User user)
+		public User UpdateUser(@RequestBody User user)
 		{
-			userRepository.save(user);
-			return "User Details updated with UserID "+ user.getUserId();
+			return userRepository.save(user);
+			 
+		}
+		@DeleteMapping("/delete")
+		public User deleteUser(@RequestBody User user)
+		{
+			userRepository.delete(user);
+			return user;
 		}
 		
 		@DeleteMapping("/delete/{userId}")
-		public String deleteTrainByID(@PathVariable int userId)
+		public String deleteUserByID(@PathVariable int userId)
 		{
 			userRepository.deleteById(userId);
 			return "User info deleted with userid "+ userId;

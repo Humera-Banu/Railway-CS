@@ -12,6 +12,16 @@ public class User {
 	public String userName;
 	public String email;
 	public long phone;
+		public User() {
+			// TODO Auto-generated constructor stub
+		}
+	public User(int userId, String userName, String email, long phone) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.email = email;
+		this.phone = phone;
+	}
 	public int getUserId() {
 		return userId;
 	}

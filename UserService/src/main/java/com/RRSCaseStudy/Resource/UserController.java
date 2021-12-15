@@ -33,7 +33,7 @@ public class UserController {
 		this.restTemplate=restTemplateBuilder.build();
 	}
 	
-//---------------User Operation On Service------------------------	
+//---------------User Operation On Train Service------------------------	
 	//------------------Viewing all the available Trains
 	public List<TrainAvailability> callForDisplaying()
 	{
