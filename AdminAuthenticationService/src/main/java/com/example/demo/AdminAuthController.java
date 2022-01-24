@@ -3,6 +3,7 @@ package com.example.demo;
 import java.util.List;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+
 import com.example.demo.model.*;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.service.AdminService;
 import com.example.demo.utils.JwtUtils;
 
 @RestController
-
+@CrossOrigin(origins = "*")
 public class AdminAuthController {
 
 	
@@ -80,22 +82,19 @@ public class AdminAuthController {
 	
 	
 	@PostMapping("/auth")
-	private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authreq){
-		String username=authreq.getUsername();
-		String password= authreq.getPassword();
+	private ResponseEntity<?> authenticate(@RequestBody AuthenticationRequest request)
+	{
+		String username = request.getUsername();
+		String password = request.getPassword();
 		try {
 			authenticates.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-				
+		} catch (Exception e) {
+			return ResponseEntity.ok(new AuthenticationResponse("Error while authenticating" + username));
 		}
-		catch(Exception e) {
-			return ResponseEntity.ok(new AuthenticationResponse(" Invalid Credentials..!"));
-		}
-		
-		UserDetails userdetails= userservice.loadUserByUsername(username);
-		
-		String jwt = jwtutil.generateToken(userdetails);
-		
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		//return ResponseEntity.ok(new AuthenticationResponse("Succesfull authentication for user " + username));
+		UserDetails loadedUser = userservice.loadUserByUsername(username);
+		String generatedToken = jwtutil.generateToken(loadedUser);
+		return ResponseEntity.ok(new AuthenticationResponse(generatedToken));
 	}
 	
 	@Autowired
@@ -105,6 +104,7 @@ public class AdminAuthController {
 	public AdminAuthController(AdminService admin) {
 		this.admin= admin;
 	}
+	//------------------------Train Service------------------------
 	//-------------------Train Info Adding----------------------//
 	  @PostMapping("/Add") 
 		public String add(@RequestBody TrainAvailability train)
@@ -112,14 +112,14 @@ public class AdminAuthController {
 			  return admin.add(train);
 		}
 		
-	//-------------Display all the train Details----------------------// 
+	//------------------Display all the train Details----------------------// 
 	@GetMapping("/gettrains")
 	public List<TrainAvailability> consume1()
 	{
 		return admin.callForDisplaying();
 	}
 	
-	//-------------Search by Source location the train Details----------------------// 
+	//---------------Search by Source location the train Details----------------------// 
 	@GetMapping("/searchBySource1/{startLocation}")
 	public List<TrainAvailability> searchby(@PathVariable ("startLocation") String startLocation)
 	{

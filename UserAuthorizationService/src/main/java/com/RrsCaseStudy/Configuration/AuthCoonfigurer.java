@@ -2,14 +2,17 @@ package com.RrsCaseStudy.Configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.RrsCaseStudy.Service.JwtFilters;
 import com.RrsCaseStudy.Service.UserService;
@@ -27,10 +30,15 @@ public class AuthCoonfigurer extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/reg","/auth")
-		.permitAll().anyRequest().authenticated().and().formLogin();
-		http.addFilterBefore(JwtFilters, UsernamePasswordAuthenticationFilter.class  );
+		
+		
+		http.csrf().disable().cors().disable().authorizeRequests().antMatchers("/reg","/auth")
+	
+		.permitAll().anyRequest().authenticated().and().headers();
+		http.addFilterBefore(JwtFilters, UsernamePasswordAuthenticationFilter.class);
+		
 	}
+	@SuppressWarnings("deprecation")
 	@Bean
 	public PasswordEncoder password()
 	{
@@ -42,4 +50,5 @@ public class AuthCoonfigurer extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManagerBean() throws Exception{
 		return super.authenticationManagerBean();
 	}
+	
 }

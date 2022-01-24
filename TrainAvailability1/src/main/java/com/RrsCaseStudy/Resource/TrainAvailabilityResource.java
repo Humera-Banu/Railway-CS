@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +25,7 @@ import com.RrsCaseStudy.Repository.RrsRepository;
 import com.RrsCaseStudy.model.TrainAvailability;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/train")
 public class TrainAvailabilityResource {
 	@Autowired
@@ -46,7 +51,7 @@ public class TrainAvailabilityResource {
 	{
 		return repository.findByDestination(destination);
 	}
-	@GetMapping("/findtrainBySource/{startLocation}")
+	@GetMapping("/findtrainBySource/{destination}")
 	public List<TrainAvailability> getTrainByStartLocation(@PathVariable String startLocation)
 	{
 		return repository.findByStartLocation(startLocation);
@@ -56,17 +61,17 @@ public class TrainAvailabilityResource {
 	{
 		return repository.findByAvailableDate(availableDate);
 	}
-	@PutMapping("/updateTraindetails")
-	public TrainAvailability UpdateTrain(@RequestBody TrainAvailability train)
+	@PutMapping("/updateTraindetails/{trainNo}")
+	public TrainAvailability UpdateTrain(@RequestBody TrainAvailability train,@PathVariable int trainNo)
 	{
 		return repository.save(train);
 		
 	}
-	@DeleteMapping("/delete/{id}")
-	public String deleteTrainByID(@PathVariable int id)
+	@DeleteMapping("/delete/{trainNo}")
+	public void deleteTrainByID(@PathVariable int trainNo)
 	{
-		 repository.deleteById(id);
-		return "Train info deleted at trainNo "+ id;
+		 repository.deleteById(trainNo);
+		//return "Train info deleted at trainNo "+ trainNo;
 	}
 	@DeleteMapping("/deleteTrain")
 	public TrainAvailability deleteTrain(@RequestBody TrainAvailability train)
@@ -74,4 +79,6 @@ public class TrainAvailabilityResource {
 		 repository.delete(train);
 		return train;
 	}
+	
+	
 }

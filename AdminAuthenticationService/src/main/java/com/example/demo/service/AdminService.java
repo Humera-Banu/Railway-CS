@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jboss.logging.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -33,7 +34,7 @@ public class AdminService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		AdminModel foundedUser=userrepo.findByusername(username);
 		if (foundedUser==null) {
-			return null;
+			throw new UsernameNotFoundException(username +" not found");
 		}
 		String user=foundedUser.getUsername();
 		String pass=foundedUser.getPassword();
@@ -46,29 +47,33 @@ public class AdminService implements UserDetailsService{
 	public AdminService(RestTemplateBuilder restTemplateBuilder) {
 		this.restTemplate= restTemplateBuilder.build();
 	}
-	//!!!!!!!!!-----------Admin Operation On train Service--------!!!!!!!!!!
-	//-------------------Train Info Adding----------------------//
+	//Admin Operation On train Service
+	//Train Info Adding
 	public String add(TrainAvailability train)
 	{
 		HttpEntity<TrainAvailability> entity = new HttpEntity<>(train);
 		return restTemplate.exchange("http://localhost:8082/train/AddTrains",HttpMethod.POST,entity,String.class).getBody();
 		
 	}
-	//-------------Display all the train Details----------------------// 
+	
+	//Display all the train Details
 	public List<TrainAvailability> callForDisplaying()
 	{
 		return restTemplate.exchange("http://localhost:8082/train/ShowAllTrains",HttpMethod.GET,null,List.class).getBody();
 		
 		  //return restTemplate.getForObject("http://localhost:8002/train-availability-service/train/ShowAllTrains",List.class);	
 	}
-	//-------------Search by Source location the train Details----------------------// 
+	
+	//Search by Source location the train Details
 	@RequestMapping("/{startLocation}")
 	public List<TrainAvailability> SeearchBySource(@PathVariable("startLocation") String startLocation)
 	{
 		return restTemplate.exchange("http://localhost:8082/train/findtrainBySource/"+startLocation,HttpMethod.GET,null,List.class).getBody();
 		//return restTemplate.getForObject("http://localhost:8002/train-availability-service/train/findtrainBySource/"+startLocation, List.class);
 	}
-	//-------------Search by Destination location the train Details----------------------// 
+	
+	
+	//Search by Destination location the train Details 
 	@RequestMapping("/{destination}")
 	public List<TrainAvailability> SeearchByDestination(@PathVariable("destination") String destination)
 	{
@@ -76,7 +81,7 @@ public class AdminService implements UserDetailsService{
 		//return restTemplate.getForObject("http://localhost:8002/train-availability-service/train/findtrainByDestination/"+destination, List.class);
 	}
 	
-	//--------------------Updating Train Info By ADMIN------------------------------------//
+	//Updating Train Info By ADMIN
 	public String UpdateTrainInfoByAdmin(TrainAvailability train)
 	{
 		HttpEntity<TrainAvailability> entity = new HttpEntity<>(train);

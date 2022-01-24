@@ -65,14 +65,14 @@ class TrainAvailabilityApplicationTests {
 		when(repository.save(train)).thenReturn(train);
 		assertEquals(train,service.AddTrain(train));
 	}
-	@Test
-	public void updateTrainTest()
-	{
-		 TrainAvailability train= new TrainAvailability(12,"Tapan","Banglore","Delhi",8346.23d,null);
-			when(repository.save(train)).thenReturn(train);
-			assertEquals(train,service.UpdateTrain(train));
-		
-	}
+//	@Test
+//	public void updateTrainTest()
+//	{
+//		 TrainAvailability train= new TrainAvailability(12,"Tapan","Banglore","Delhi",8346.23d,null);
+//			when(repository.save(train)).thenReturn(train);
+//			assertEquals(train,service.UpdateTrain(train));
+//		
+	//}
 	@Test
 	public void deleteTrainTest()
 	{

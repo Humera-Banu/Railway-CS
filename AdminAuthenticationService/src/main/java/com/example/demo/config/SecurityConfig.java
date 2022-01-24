@@ -1,6 +1,7 @@
 package com.example.demo.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,20 +22,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	JwtFilterReq jwtfilter;
 	
 	@Autowired
-	private AdminService userservice;
+	private AdminService userService;
 	
+	@Autowired
+	private JwtFilterReq JwtFilters;
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		
-		auth.userDetailsService(userservice);
+		auth.userDetailsService(userService);
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		
-		http.csrf().disable().authorizeRequests().antMatchers("/subs", "auth")
+		http.csrf().disable().authorizeRequests().antMatchers("/reg","/auth")
 		.permitAll().anyRequest().authenticated().and().formLogin();
-		http.addFilterBefore(jwtfilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(JwtFilters, UsernamePasswordAuthenticationFilter.class  );
 	}
 	
 	@Bean

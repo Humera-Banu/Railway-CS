@@ -70,6 +70,8 @@ public class TrainAvailability {
 	public void setAvailableDate(Date availableDate) {
 		this.availableDate = availableDate;
 	}
+
+	
 	
 
 }

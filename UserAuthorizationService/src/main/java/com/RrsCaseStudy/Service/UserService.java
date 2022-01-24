@@ -62,6 +62,7 @@ public class UserService implements UserDetailsService {
 		
 	//---------------User Operation On Train Service------------------------	
 		//------------------Viewing all the available Trains
+		
 		public List<TrainAvailability> callForDisplaying()
 		{
 			return restTemplate.exchange("http://localhost:8082/train/ShowAllTrains",HttpMethod.GET,null,List.class).getBody();
@@ -69,6 +70,7 @@ public class UserService implements UserDetailsService {
 			  //return restTemplate.getForObject("http://localhost:8002/train-availability-service/train/ShowAllTrains",List.class);	
 		}
 			
+		
 		@RequestMapping("/{startLocation}")
 		public List<TrainAvailability> SeearchBySource(@PathVariable("startLocation") String startLocation)
 		{
@@ -77,6 +79,7 @@ public class UserService implements UserDetailsService {
 		}
 		
 		//-------------Search by Destination location the train Details----------------------// 
+		
 		@RequestMapping("/{destination}")
 		public List<TrainAvailability> SeearchByDestination(@PathVariable("destination") String destination)
 		{
@@ -92,7 +95,8 @@ public class UserService implements UserDetailsService {
 			
 		}
 		//-----------------View All Reservation----------------------
-		
+		//adding Reservation
+			
 			public List<Reservation> getReservation()
 			{
 				return restTemplate.exchange("http://localhost:8083/reservation/getall",HttpMethod.GET,null,List.class).getBody();
